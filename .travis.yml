@@ -1,0 +1,29 @@
+# Config file for automatic testing at travis-ci.org
+
+language: c
+
+env:
+  - LUA="Lua 5.1"
+  - LUA="Lua 5.2"
+  - LUA="Lua 5.3"
+  - LUA="LuaJIT 2.0"
+
+before_install:
+  - bash .travis_setup.sh
+
+install:
+  - sudo apt-get update -qq
+  - sudo luarocks install luasec
+  - git clone git://github.com/Olivine-Labs/busted.git
+  - cd busted
+  - sudo luarocks make busted-scm-0.rockspec
+  - cd ../
+
+script: "busted spec"
+
+notifications:
+  recipients:
+    - michal.h21@gmail.com
+  email:
+    on_success: always
+    on_failure: always
