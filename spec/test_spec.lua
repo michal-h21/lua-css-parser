@@ -1,26 +1,100 @@
 -- test_spec.lua
 expose("exposed test for lua-css-parser", function()
-    require("cssparser")
+    local cssparser = require("cssparser")
 
     -- tests can go here
+    local testdocument = [[
+@page {
+  size: a5;
+  margin: 1cm;
+}
 
-    describe("some assertions", function()
-        it("tests positive assertions", function()
-            assert.is_true(true)    -- Lua keyword chained with _
-            assert.True(true)         -- Lua keyword using a capital
-            assert.are.equal(1, 1)
-            assert.has.errors(function() error("this should fail") end)
-        end)
+@import url("fineprint.css") print;
+@import url("bluish.css") speech;
+@import 'custom.css';
+@import url("chrome://communicator/skin/");
 
-        it("tests negative assertions", function()
-            assert.is_not_true(false)
-            assert.are_not.equals(1, "1")
-            assert.has_no.errors(function() end)
-        end)
-    end)
+@supports (display: grid) {
+    div {
+          display: grid;
+    }
+}
 
-    describe("a block", function()
+/* At the top level of your code */
+@media screen and (min-width: 900px) {
+  article {
+    padding: 1rem 3rem;
+  }
+}
+
+/* Nested within another conditional at-rule */
+@supports (display: flex) {
+  @media screen and (min-width: 900px) {
+    article {
+      display: flex;
+    }
+  }
+}
+
+@font-face {
+  font-family: myFirstFont;
+  src: url(sansation_light.woff);
+}
+
+/* media queries doesn't seem to be supported */
+@media print {
+  body {
+    margin: 10pt;
+  }
+}
+
+div.outer {
+  font-size: 14pt;
+  color: red;
+  text-align: justify;
+  width: 80%;
+  margin-bottom: 2em;
+}
+
+img {
+  width: 20%;
+}
+
+.img-left {
+  float: left;
+  margin-right: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+.img-right {
+  float: right;
+  margin-left: 0.5em;
+  margin-bottom: 0.25em;
+}
+
+
+table {
+  border: 1px solid black;
+  width: 50%;
+  border-collapse : collapse;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+/* test the comments */
+
+img:before{
+  content: "hello world";
+}
+]]
+
+    describe("Basic parsing should work", function()
+      local css = cssparser.new()
         it("should have lots of features", function()
+
             -- deep check comparisons!
             assert.are.same({ table = "great"}, { table = "great" })
 
