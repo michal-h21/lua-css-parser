@@ -24,7 +24,7 @@ function parser:parse(text, filename)
   self.text = text
   -- list of imported CSS files
   self:parse_blocks()
-  return self.csssom
+  return self.cssom
 end
 
 function parser:get_imports()
@@ -143,7 +143,7 @@ function parser:parse_declarations(declarations)
   return properties
 end
 -- 
-function parser:make_csssom()
+function parser:make_cssom()
 
 end
 
